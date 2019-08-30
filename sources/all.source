@@ -1,0 +1,14 @@
+source_dir=$HOME/.2l-sources
+exclude_file=all.source
+IF=$'\n';
+for file in $(ls -I all.source $source_dir/*.source); do
+  if [[ ! $file =~ $exclude_file$ ]]; then
+     if [ -f $file ]; then
+	#echo $file 
+        source $file
+     fi
+  fi
+done
+unset source_dir
+unset exclude_file
+unset IF

@@ -1,0 +1,55 @@
+# URL ref.: https://www.computerhope.com/unix/bash/bind.htm
+# Lembrete:
+# Teclar CTR+v e digitar a tecla para saber o valor correspondente
+# do valor retornado subtituir ^[ por \e (valor da tecla <ESC> no basch
+
+# F1 and CTRL+F1 and CTRL+Shift+F1
+bind '"\eOP":"eval $(cat ~/.2l-sources/f1.key)\n"'
+bind '"\e[1;5P":"echo cd $PWD > ~/.2l-sources/f1.key\n"'
+bind '"\e[1;6P":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f1.key\n"'
+
+# F2 and CTRL+F2 and CTRL+Shift+F2
+bind '"\eOQ":"eval $(cat ~/.2l-sources/f2.key)\n"'
+bind '"\e[1;5Q":"echo cd $PWD > ~/.2l-sources/f2.key\n"'
+bind '"\e[1;6Q":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f2.key\n"'
+
+# F3 and CTRL+F3 and CTRL+Shift+F3  ^[OR ^[[1;5R  ^[[1;6
+bind '"\eOR":"eval $(cat ~/.2l-sources/f3.key)\n"'
+bind '"\e[1;5R":"echo cd $PWD > ~/.2l-sources/f3.key\n"'
+bind '"\e[1;6R":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f3.key\n"'
+
+# F4 and CTRL+F4 and CTRL+Shift+F4  ^[OS ^[[1;5S ^[[1;6S
+bind '"\eOS":"eval $(cat ~/.2l-sources/f4.key)\n"'
+bind '"\e[1;5S":"echo cd $PWD > ~/.2l-sources/f4.key\n"'
+bind '"\e[1;6S":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f4.key\n"'
+
+# F5 and CTRL+F5 and CTRL+Shift+F5 
+bind '"\e[15~":"eval $(cat ~/.2l-sources/f5.key)\n"'
+bind '"\e[15;5~":"echo cd $PWD > ~/.2l-sources/f5.key\n"'
+bind '"\e[15;6~":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f5.key\n"'
+
+# F6 and CTRL+F6 and CTRL+Shift+F6 
+bind '"\e[17~":"eval $(cat ~/.2l-sources/f6.key)\n"'
+bind '"\e[17;5~":"echo cd $PWD > ~/.2l-sources/f6.key\n"'
+bind '"\e[17;6~":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f6.key\n"'
+
+# F7 and CTRL+F7 and CTRL+Shift+F7
+bind '"\e[18~":"eval $(cat ~/.2l-sources/f7.key)\n"'
+bind '"\e[18;5~":"echo cd $PWD > ~/.2l-sources/f7.key\n"'
+bind '"\e[18;6~":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f7.key\n"'
+
+# F8 and CTRL+F8 and CTRL+Shift+F8 
+bind '"\e[19~":"eval $(cat ~/.2l-sources/f8.key)\n"'
+bind '"\e[19;5~":"echo cd $PWD > ~/.2l-sources/f8.key\n"'
+bind '"\e[19;6~":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f8.key\n"'
+
+# F9 and CTRL+F9 and CTRL+Shift+F9 
+bind '"\e[20~":"eval $(cat ~/.2l-sources/f9.key)\n"'
+bind '"\e[20;5~":"echo cd $PWD > ~/.2l-sources/f9.key\n"'
+bind '"\e[20;6~":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f9.key\n"'
+
+# F12 and CTRL+F12 and CTRL+Shift+F12 
+bind '"\e[24~":"eval $(cat ~/.2l-sources/f12.key)\n"'
+bind '"\e[24;5~":"echo cd $PWD > ~/.2l-sources/f12.key\n"'
+bind '"\e[24;6~":"read -p \"Command (CTRL+c to exit): \" var && echo $var > ~/.2l-sources/f12.key\n"'
+
