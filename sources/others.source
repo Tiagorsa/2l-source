@@ -1,0 +1,356 @@
+unset mkdircd
+
+# Function name: so-create-shell-script()
+#   Description: Create shell script 
+#    Created at: 2019-08-02
+#            By: Tiago Sá
+############################################
+
+so-create-shell-script(){
+ if [ "$#" -ne 1 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <file name> "
+else 
+  filename=$1
+  str='#!/bin/bash'
+  if [ ! -f "$filename" ]; then
+    echo -e "$str\n" > $filename 
+  else
+    sed -i '1s/^/#!\/bin\/bash\n/' $filename
+  fi 
+fi 
+}
+
+# Function name: so-create-shell-script-env()
+#   Description: Create shell script 
+#    Created at: 2019-08-02
+#            By: Tiago Sá
+############################################
+
+so-create-shell-script-env(){
+ if [ "$#" -ne 1 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <file name> "
+else 
+  filename=$1
+  str='#!/usr/bin/env bash'
+  if [ ! -f "$filename" ]; then
+    echo -e "$str\n" > $filename 
+  else
+    sed -i '1s/^/#!\/usr\/bin\/env bash\n/' $filename
+  fi 
+fi 
+}
+
+
+# Function name: so-dir-size()
+#   Description: Get Directory size
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+so-dir-size(){
+  if [ -z $1 ]; then
+    path=`pwd`
+  else
+    path=$1
+  fi
+  
+  #echo "  Shell command:"
+  #echo "   \$ du -ch --exclude ".*" <path>"
+
+  # Excluide hidin directorys
+  du -ch --exclude ".*" $path
+}
+
+# Function name: so-dir-size-all()
+#   Description: Get Directory size
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+so-dir-size-all(){
+  if [ -z $1 ]; then
+    path=`pwd`
+  else
+    path=$1
+  fi
+  
+  #echo "  Shell command:"
+  #echo "   \$ du -ch <path>"
+  du -ch  $path
+}
+
+
+
+# Function name: mkdircd()
+#   Description: Create directory and set as current 
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+mkdircd(){
+ if [ "$#" -ne 1 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <directory name> "
+else 
+  mkdir -p "$*" && cd "$*" 
+fi 
+}
+
+# Function name: so-add-sudo-user()
+#   Description: 
+#    Created at: 2019-05-08
+#            By: Tiago Sá
+############################################
+
+
+so-add-user-sudo() {
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <user name> <password> "
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ useradd -m -p <password> -s bin bash <user name> "
+  echo "   \$ usermod -aG sudo <user name>"
+ else
+  username=$1
+  passwd=$2
+  echo "  Shell command:"
+  echo "   \$ sudo useradd -m -p $passwd -s bin bash $username"
+  echo "   \$ sudo usermod -aG sudo $username"
+  sudo useradd -m -p $passwd -s /bin/bash $username 
+  sudo usermod -aG sudo $username
+ fi
+}
+
+# Function name: so-add-text-to-file()
+#   Description: Add text to file if not exist
+#    Created at: 2019-08-03
+#            By: Tiago Sá
+############################################
+
+so-add-text-to-file() {
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <text find> <file name>"
+ else
+  str="$1"
+  file_name="$2"
+  if [ ! -f "$file_name" ]; then
+    echo "Add [ $str ] in [ $file_name ] created! "
+    echo "$str" >> $file_name
+  else 
+    if grep -Fxq "$str" "$file_name" 
+    then
+      # code if found
+      echo "ERRO: Value [ $str ] exist in [ $file_name ]!"
+    else
+      # code if not found
+      echo "Add [ $str ] in [ $file_name ] "
+      echo "$str" >> $file_name
+    fi
+  fi 
+ fi
+}
+
+
+# Function name: so-find-text()
+#   Description: 
+#    Created at: 2019-07-15
+#            By: Tiago Sá
+############################################
+
+so-find-text() {
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <text find> [file type]"
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ grep -R --exclude-dir=.git <text find>"
+ else
+  text_find=$1
+  file_type=$2
+  echo "  Shell command:"
+  echo "   \$ grep -in -R --include=\*.[file type] --exclude-dir=.git --exclude-dir=python3.5 --exclude-dir=python3.6 --exclude-dir=python3.7 <text find>"
+  # grep -R --exclude-dir=.git $text_find
+  if [ ! -z "$file_type" ]; then
+    grep -in -R --include=\*.$file_type --exclude-dir=.git --exclude-dir=python3.5 --exclude-dir=python3.6 --exclude-dir=python3.7 "$text_find"
+  else
+    grep -in -R --exclude-dir=.git --exclude-dir=python3.5 --exclude-dir=python3.6 --exclude-dir=python3.7 "$text_find"
+  fi 
+ fi
+}
+
+
+
+# Function name: so-find-text-filename()
+#   Description: 
+#    Created at: 2019-08-10
+#            By: Tiago Sá
+############################################
+
+so-find-text-filename() {
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <text find> [file type]"
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ grep -l -in -R --exclude-dir=.git <text find>"
+ else
+  text_find=$1
+  file_type=$2
+  echo "  Shell command:"
+  echo "   \$ grep -in -R --include=\*.[file type] --exclude-dir=.git --exclude-dir=python3.5 --exclude-dir=python3.6 --exclude-dir=python3.7 <text find>"
+  # grep -R --exclude-dir=.git $text_find
+  if [ ! -z "$file_type" ]; then
+    grep -l -in -R --include=\*.$file_type --exclude-dir=.git --exclude-dir=python3.5 --exclude-dir=python3.6 --exclude-dir=python3.7 "$text_find"
+  else
+    grep -l -in -R --exclude-dir=.git --exclude-dir=python3.5 --exclude-dir=python3.6 --exclude-dir=python3.7 "$text_find"
+  fi 
+ fi
+}
+
+
+# Function name: so-mv-ext()
+#   Description: Move files and rename extentions
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+so-mv-ext(){  
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <extension> <new file extension> "
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ <filename>"
+ else
+  for fx in *.$1; do 
+    mv $fx `basename $fx .$1`.$2; 
+  done  
+ fi
+}
+
+
+export MYIP=`hostname -I | cut -f1 -d' '`
+
+# Function name: myip
+#   Description: Update MYIP enviroment variabel. 
+#                This funcion can be called to update 
+#                IP and change netword device, like wifi and cable devices
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+alias so-myip='export MYIP=`hostname -I | cut -f1 -d" "`'
+
+so-myip-show() {
+  export MYIP=`hostname -I | cut -f1 -d" "`
+  echo $MYIP
+}
+
+
+
+# Function name: so-get-gdrive()
+#   Description: 
+#      URL ref.: https://gist.github.com/iamtekeste/3cdfd0366ebfd2c0d805
+#    Created at: 2019-05-03
+#            By: Tiago Sá
+############################################
+
+so-get-gdrive() {
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <filename> <google file ID> "
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ wget --no-check-certificate 'https://drive.google.com/uc?id=<google file ID>&export=download' -O <filename>"
+ else
+  FILENAME=$1
+  FILEID=$2
+  echo $FILEID
+  echo $FILENAME
+  drive_url="wget --no-check-certificate 'https://drive.google.com/uc?id=$FILEID&export=download' -O $FILENAME"
+  echo ""
+  echo "  Shell command:"
+  echo "    $drive_url"
+  echo ""
+  echo ""
+  eval $drive_url
+ fi
+}
+
+
+
+
+# Function name: so-get-big-gdrive
+#   Description: 
+#      URL ref.: https://gist.github.com/iamtekeste/3cdfd0366ebfd2c0d805
+#    Created at: 2019-05-03
+#            By: Tiago Sá
+############################################
+
+so-get-gdrive-bigFile() {
+ if [ "$#" -ne 2 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <filename> <google file ID> "
+ else
+  FILENAME=$1
+  FILEID=$2
+
+  CONFIRM=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate "https://docs.google.com/uc?export=download&id=$FILEID" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$CONFIRM&id=$FILEID" -O $FILENAME
+  rm -rf /tmp/cookies.txt
+ fi
+}
+
+
+# Function name: so-replace-str
+#   Description: 
+#    Created at: 2019-07-15
+#            By: Tiago Sá
+############################################
+
+so-replace-str() {
+ if [ "$#" -ne 3 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <find> <replace> <file name> "
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ sed -i \"s/<find>/<replace>/g\" <file name>"
+ else
+  str_find=$1
+  str_replace=$2
+  file_name=$3
+
+  #echo "${str_find}"  "${str_replace}"
+  #echo "File name: $file_name"
+
+  if [ -f "$file_name" ]; then
+    if [ ! -z "$str_find" ]; then
+      sed -i "s/${str_find}/${str_replace}/g" $file_name
+    else
+      echo "String to by finded not defined! "
+    fi
+  else
+   echo "File not found $file_name! "
+  fi
+ fi
+}
+
+
+
+
+

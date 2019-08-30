@@ -1,0 +1,143 @@
+source_2l_dir=".2l-sources"
+source_2l_code_dir="2l-sources"
+exclude_2l_file=all.source
+
+# Function name: 2l-func-content()
+#   Description: Show the function content
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+2l-func-content() {
+ if [ "$#" -ne 1 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <Function-Name> "
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ typeset -f <Function-Name>"
+ else
+  echo "  Shell command:"
+  echo "   \$ typeset -f $1"
+  echo "-----------------------------------------"
+  typeset -f $1
+ fi
+}
+
+# Function name: 2l-path()
+#   Description: Show instaletion path 
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+2l-path()
+{
+  echo "$HOME/$source_2l_dir"
+}
+
+# Function name: 2l-list()
+#   Description: Show instaletion path 
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+2l-list(){
+  IF=$'\n';
+  echo "Sources directory: $HOME/$source_2l_dir"
+  for file in $(ls -I all.source $HOME/$source_2l_dir/*.source); do
+    if [[ ! $file =~ $exclude_2l_file$ ]]; then
+      if [ -f $file ]; then
+        echo "  "`basename ${file}`
+      fi
+    fi
+  done
+}
+
+# Function name: 2l-key()
+#   Description: Show key mapping 
+#    Created at: 2019-08-08
+#            By: Tiago Sá
+############################################
+
+2l-key-ls(){
+  IF=$'\n';
+  echo "Sources directory: $HOME/$source_2l_dir"
+  for file in $(ls -I all.source $HOME/$source_2l_dir/f?*.key); do
+    if [[ ! $file =~ $exclude_2l_file$ ]]; then
+      if [ -f $file ]; then
+        cmd=$(cat $file)
+        echo "  "`basename ${file}`" -> "$cmd
+      fi
+    fi
+  done
+}
+
+
+# Function name: 2l-key-clear-all()
+#   Description: Delete all key mapping 
+#    Created at: 2019-08-08
+#            By: Tiago Sá
+############################################
+
+2l-key-clear-all(){
+  echo "Sources directory: $HOME/$source_2l_dir"
+  echo ""
+  echo "##ATENTION: This will Delete all key mapping"
+  echo "-------------------------------------------------------------"
+  read -p "Are you sure (Y/N) ? " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[YySs]$ ]];  then
+    rm -f $HOME/$source_2l_dir/f?*.key
+  fi
+}
+
+
+
+# Function name: 2l-key-clear()
+#   Description: Delete key mapping 
+#    Created at: 2019-08-14
+#            By: Tiago Sá
+############################################
+
+2l-key-clear(){
+if [ "$#" -ne 1 ]; then
+  funcion_name=${FUNCNAME[ 0 ]}
+  echo "SYNTAX ERROR: $funcion_name "
+  echo "Usage: $funcion_name <key [f1 f2 f3 ...]> "
+  echo ""
+  echo "  Shell command:"
+  echo "   \$ rm ~/$source_2l_dir/<Function key>.key"
+ else
+    func_key=${1,,}
+    file_name=$HOME/$source_2l_dir/$func_key.key
+    echo "  Shell command:"
+    echo "   \$ rm $file_name"    
+    if [ -f $file_name ]; then
+      rm -f $file_name
+    fi
+fi
+}
+
+
+# Function name: 2l-update
+#   Description: Show instaletion path 
+#    Created at: 2019-04-17
+#            By: Tiago Sá
+############################################
+
+2l-update() {
+  #current_dir=`pwd`
+  echo "  Shell command:"
+  echo "   \$ cp "$full_script_source/$source_2l_code_dir/*.source" "~/$source_2l_dir
+  echo "   \$ source ~/.bashrc"
+
+  if [[ -z $full_script_source ]]; then
+    full_script_source=$HOME"/django/django-estudo/scripts"
+  fi
+
+  #cd $HOME
+  #echo "cp $full_script_source/$source_2l_code_dir/*.source $HOME/$source_2l_dir/"
+  cp $full_script_source/$source_2l_code_dir/*.source $HOME"/"$source_2l_dir/
+  source ~/.bashrc
+  #cd $current_dir
+}
